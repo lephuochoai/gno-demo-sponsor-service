@@ -1,11 +1,13 @@
 import { type ForwardRefExoticComponent, type RefAttributes, type SVGProps } from 'react';
 
+import send from './svg/send.svg';
 import telegram from './svg/telegram.svg';
 import twitter from './svg/twitter.svg';
 
 const IconList = {
   twitter,
   telegram,
+  send,
 };
 
 type SVGAttributes = Partial<SVGProps<SVGSVGElement>>;

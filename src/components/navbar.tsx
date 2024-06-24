@@ -2,17 +2,9 @@
 
 import { useState } from 'react';
 import NextLink from 'next/link';
-import {
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
-  Navbar as NextUINavbar,
-} from '@nextui-org/navbar';
+import { NavbarBrand, NavbarContent, Navbar as NextUINavbar } from '@nextui-org/navbar';
 
-import { StyledButton } from './ui/styled-button';
+import { body } from './primitives';
 
 interface NavLinkItemProps {
   label: string;
@@ -47,7 +39,7 @@ export const Navbar = () => {
       onMenuOpenChange={setIsMenuOpen}
       className="group"
       classNames={{
-        base: 'bg-transparent -mb-20',
+        base: 'bg-gray-800 text-foreground-50',
         wrapper: 'px-4 lg:px-6',
         item: ['flex', 'relative', 'cursor-pointer', 'h-full', 'w-fit', 'items-center', 'group'],
       }}
@@ -64,21 +56,18 @@ export const Navbar = () => {
         className="shadow-navbar gradient-border-2 gradient-border-gradient-nav relative hidden h-fit gap-8 rounded-3xl bg-[rgba(3,1,21,0.01)] px-8 py-4 backdrop-blur-md lg:flex"
         justify="center"
       >
-        {navLinkItems.map((item) => (
-          <NavbarItem key={item.label}>{item.label}</NavbarItem>
-        ))}
+        <p className={body({ variant: 18 })}>Sponsor Service</p>
       </NavbarContent>
 
       <NavbarContent className="basis-1" justify="end">
-        <StyledButton>Contact</StyledButton>
-        <NavbarMenuToggle aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} className="lg:hidden " />
+        {/* <NavbarMenuToggle aria-label={isMenuOpen ? 'Close menu' : 'Open menu'} className="lg:hidden " /> */}
       </NavbarContent>
 
-      <NavbarMenu className="h-fit bg-[#00061899] backdrop-blur-md">
+      {/* <NavbarMenu className="h-fit bg-[#00061899] backdrop-blur-md">
         {navLinkItems.map((item) => (
           <NavbarMenuItem key={item.label}>{item.label}</NavbarMenuItem>
         ))}
-      </NavbarMenu>
+      </NavbarMenu> */}
     </NextUINavbar>
   );
 };
