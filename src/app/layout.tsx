@@ -1,10 +1,12 @@
 import '@/styles/globals.css';
 
 import { type Metadata, type Viewport } from 'next';
+import { WalletContextProviderWrapper } from '@/context/wallet.context';
 import clsx from 'clsx';
 
 import { fontMono, fontSans } from '@/config/fonts';
 import { APP_URL, siteConfig } from '@/config/site';
+import { QueryClientProviderWrapper } from '@/lib/query-provider';
 
 import { Providers } from './providers';
 
@@ -62,7 +64,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
         className={clsx('bg-background min-h-screen font-sans antialiased', fontSans.variable, fontMono.variable)}
       >
-        <Providers themeProps={{ attribute: 'class', forcedTheme: 'light' }}>{children}</Providers>
+        <QueryClientProviderWrapper>
+          <WalletContextProviderWrapper>
+            <Providers themeProps={{ attribute: 'class', forcedTheme: 'light' }}>{children}</Providers>
+          </WalletContextProviderWrapper>
+        </QueryClientProviderWrapper>
       </body>
     </html>
   );

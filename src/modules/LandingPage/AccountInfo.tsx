@@ -9,20 +9,9 @@ type Props = {};
 export const AccountInfo = (props: Props) => {
   return (
     <div className="space-y-8 pb-8">
-      {/* <Heading /> */}
-
       <Balance />
 
       <Actions />
-    </div>
-  );
-};
-
-const Heading = () => {
-  return (
-    <div className="p-4 shadow-md">
-      <p className="text-center">Account Name</p>
-      <p className="text-center">Account Address</p>
     </div>
   );
 };

@@ -4,7 +4,13 @@ import React, { useState, type PropsWithChildren } from 'react';
 import { AppContextProvider } from '@/context/app.context';
 import { Box } from '@/modules/LandingPage/components/Box';
 import { Container } from '@/modules/LandingPage/components/Container';
+import { Button } from '@nextui-org/button';
+import { Skeleton } from '@nextui-org/react';
 
+import { shortenString } from '@/lib/common';
+import { useAccount } from '@/hooks/wallet/useAccount';
+import { useConnected } from '@/hooks/wallet/useConnected';
+import { useDisconnect } from '@/hooks/wallet/useDisconnect';
 import Footer from '@/components/footer';
 
 const Layout = ({ children }: PropsWithChildren) => {
@@ -32,10 +38,40 @@ const Layout = ({ children }: PropsWithChildren) => {
 export default Layout;
 
 const Heading = () => {
+  const { data: account, isLoading } = useAccount();
+  const { data: isConnected } = useConnected();
+  const { mutate: disconnect, isPending: disconnecting } = useDisconnect();
+
+  if (isLoading) return <SkeletonHeadingLoading />;
+
+  if (isConnected)
+    return (
+      <div className="flex items-center p-4 shadow-md">
+        <div className="flex-1" />
+
+        <p className="text-center">{shortenString(account?.address ?? '', 4)}</p>
+
+        <div className="flex flex-1 justify-end">
+          <Button onClick={() => disconnect()} isLoading={disconnecting}>
+            Disconnect
+          </Button>
+        </div>
+      </div>
+    );
+
+  return null;
+};
+
+const SkeletonHeadingLoading = () => {
   return (
-    <div className="p-4 shadow-md">
-      <p className="text-center">Account Name</p>
-      <p className="text-center">Account Address</p>
+    <div className="flex justify-center p-4 shadow-md">
+      <div className="flex-1" />
+
+      <Skeleton className="rounded-lg">
+        <div className="bg-secondary h-10 w-40"></div>
+      </Skeleton>
+
+      <div className="flex-1" />
     </div>
   );
 };
