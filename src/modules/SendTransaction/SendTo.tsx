@@ -1,13 +1,23 @@
 import * as React from 'react';
+import { useSendTransactionContext } from '@/context/sendTransaction.context';
 import { Input } from '@nextui-org/input';
 
-type Props = {};
-export const SendTo = (props: Props) => {
-  return (
-    <div className="space-y-4 p-4">
-      <p className="font-medium">Send To:</p>
+export const SendTo = () => {
+  const { sendTransactionValue, onSendTransaction } = useSendTransactionContext();
 
-      <Input className="placeholder-gray-500::placeholder" placeholder="Enter the wallet address" />
-    </div>
+  const handleChangeAddress = (address: string) => {
+    onSendTransaction({ toAddress: address });
+  };
+
+  return (
+    <Input
+      type="email"
+      label="Send To"
+      placeholder="Enter the wallet address"
+      value={sendTransactionValue?.toAddress}
+      onChange={(e) => handleChangeAddress(e.target.value)}
+      onClear={() => handleChangeAddress('')}
+      isClearable
+    />
   );
 };

@@ -4,6 +4,8 @@ type Address = string;
 
 export type SendTractionValue = {
   toAddress: Address;
+  toAmount: string;
+  sponsorAddress: Address;
 };
 
 type SendTransactionContextProps = {
