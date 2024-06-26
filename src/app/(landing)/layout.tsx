@@ -49,7 +49,7 @@ const Heading = () => {
       <div className="flex items-center p-4 shadow-md">
         <div className="flex-1" />
 
-        <p className="text-center">{shortenString(account?.address ?? '', 4)}</p>
+        <p className="text-center font-bold">{shortenString(account?.address ?? '', 4)}</p>
 
         <div className="flex flex-1 justify-end">
           <Button onClick={() => disconnect()} isLoading={disconnecting}>

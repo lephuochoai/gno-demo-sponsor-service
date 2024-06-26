@@ -83,6 +83,9 @@ importers:
       autoprefixer:
         specifier: 10.4.16
         version: 10.4.16(postcss@8.4.31)
+      bignumber.js:
+        specifier: ^9.1.2
+        version: 9.1.2
       clsx:
         specifier: ^2.0.0
         version: 2.1.0
@@ -3562,6 +3565,9 @@ packages:
 
   big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
+
+  bignumber.js@9.1.2:
+    resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
 
   binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
@@ -12835,6 +12841,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   big.js@5.2.2: {}
+
+  bignumber.js@9.1.2: {}
 
   binary-extensions@2.2.0: {}
 

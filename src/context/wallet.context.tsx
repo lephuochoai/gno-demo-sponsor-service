@@ -11,6 +11,7 @@ type WalletContextProps = {
   connect: () => void;
   disconnectWallet: () => void;
   setWalletAccount: (account: any) => void;
+  doContract: (messages: SignAndSendTrans[]) => void;
 };
 
 export const [WalletContextProvider, useWalletContext] = createSafeContext<WalletContextProps>(
@@ -21,6 +22,7 @@ const SPONSOR_SESSION_KEY = 'SPONSOR_SESSION';
 
 export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) => {
   const [walletAccount, setWalletAccount] = useState<any>();
+  const [provider, setProvider] = useState<any>();
   const [sessionId, setSessionId] = useState('');
 
   const isConnected = useMemo(() => {
@@ -38,17 +40,33 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       //open adena.app in a new tab if the adena object is not found
       window.open('https://adena.app/', '_blank');
     } else {
-      await window.adena.AddEstablish('Adena');
+      window.adena.AddEstablish('Adena');
       const account = await window.adena.GetAccount();
-
       setWalletAccount(account?.data);
+      setProvider(window.adena);
     }
   }, []);
 
+  const doContract = async (messages: SignAndSendTrans[]) => {
+    if (!provider) return;
+
+    await provider.DoContract({
+      messages: messages,
+      gasFee: 1,
+      gasWanted: 10000000,
+    });
+  };
+
+  /**
+   * Get current session id
+   */
   useEffect(() => {
     setSessionId(sessionStorage.getItem(SPONSOR_SESSION_KEY) ?? '');
   }, []);
 
+  /**
+   * Set current session id
+   */
   useEffect(() => {
     if (sessionId || !walletAccount) return;
     const id = uuidv4();
@@ -56,16 +74,40 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
     sessionStorage.setItem(SPONSOR_SESSION_KEY, id);
   }, [walletAccount, sessionId]);
 
+  /**
+   * Reconnect to adena
+   */
   useEffect(() => {
     if (!sessionId) return;
     connectAdenaClient();
   }, [connectAdenaClient, sessionId]);
 
+  /**
+   * Detect event
+   */
+  useEffect(() => {
+    if (!provider) return;
+    provider.On('changedAccount', () => connectAdenaClient());
+    provider.On('changedNetwork', () => connectAdenaClient());
+  }, [connectAdenaClient, provider]);
+
   return (
     <WalletContextProvider
-      value={{ walletAccount, isConnected, connect: connectAdenaClient, setWalletAccount, disconnectWallet }}
+      value={{
+        walletAccount,
+        isConnected,
+        connect: connectAdenaClient,
+        setWalletAccount,
+        disconnectWallet,
+        doContract,
+      }}
     >
       {children}
     </WalletContextProvider>
   );
+};
+
+export type SignAndSendTrans = {
+  type: '/bank.MsgSend' | '/vm.m_call' | '/vm.m_addpkg' | '/vm.m_run';
+  value: any;
 };

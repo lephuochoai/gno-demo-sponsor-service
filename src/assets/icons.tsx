@@ -2,6 +2,7 @@ import { type ForwardRefExoticComponent, type RefAttributes, type SVGProps } fro
 
 import chevronRight from './svg/chevron-right.svg';
 import gnot from './svg/gnot.svg';
+import image from './svg/image.svg';
 import send from './svg/send.svg';
 import telegram from './svg/telegram.svg';
 import twitter from './svg/twitter.svg';
@@ -12,6 +13,7 @@ const IconList = {
   send,
   chevronRight,
   gnot,
+  image,
 };
 
 type SVGAttributes = Partial<SVGProps<SVGSVGElement>>;

@@ -1,4 +1,5 @@
-import { getAddress, isAddress } from 'viem';
+import { BigNumber } from 'bignumber.js';
+import { formatUnits, getAddress, isAddress } from 'viem';
 
 import { REGEX_EMOJI, REGEX_NO_SPECIAL_CHARACTERS } from './regex';
 
@@ -133,3 +134,35 @@ export function shortenAddress(address?: string | null, length = 4): string | un
     throw new TypeError("Invalid input, address can't be parsed");
   }
 }
+
+export const amountEmptyNumberInit = {
+  amount: 0,
+  currency: '',
+};
+
+export const textToBalances = (balancesText: string) => {
+  const balanceTexts = balancesText.split(',');
+  if (balanceTexts.length === 0) {
+    return [amountEmptyNumberInit];
+  }
+  const balances = balanceTexts.map(convertTextToAmount);
+  return balances;
+};
+
+const convertTextToAmount = (text: string) => {
+  const balance = text
+    .trim()
+    // eslint-disable-next-line quotes
+    .replace('"', '')
+    .match(/[a-zA-Z]+|[0-9]+(?:\.[0-9]+|)/g);
+
+  const amount = balance && balance?.length > 0 ? balance[0] : 0.0;
+  const currency = balance && balance?.length > 1 ? balance[1] : '';
+  return {
+    amount: BigNumber(amount).toNumber(),
+    amountFormatted: Number(formatUnits(BigInt(BigNumber(amount).toNumber()), 6)).toLocaleString(undefined, {
+      maximumFractionDigits: 5,
+    }),
+    currency,
+  };
+};

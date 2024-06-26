@@ -37,7 +37,7 @@ export const SendTransactionModule = () => {
       )}
 
       <div className="flex justify-center gap-4">
-        <Button color="default" size="lg" className="w-full px-0">
+        <Button color="default" size="lg" className="w-full flex-1 px-0">
           <Link href={ROUTES.DASHBOARD} className="flex h-full w-full items-center justify-center">
             Cancel
           </Link>
