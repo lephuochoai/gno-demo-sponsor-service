@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, type PropsWithChildren } from 'react';
+import { Box } from '@/app/(landing)/components/Box';
+import { Container } from '@/app/(landing)/components/Container';
 import { AppContextProvider } from '@/context/app.context';
-import { Box } from '@/modules/LandingPage/components/Box';
-import { Container } from '@/modules/LandingPage/components/Container';
 import { Button } from '@nextui-org/button';
 import { Skeleton } from '@nextui-org/react';
 

@@ -1,12 +1,10 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Icons } from '@/assets/icons';
-import { Button } from '@nextui-org/button';
 
 import { ROUTES } from '@/lib/routes';
 
-type Props = {};
-export const AccountInfo = (props: Props) => {
+export const AccountInfo = () => {
   return (
     <div className="space-y-8 pb-8">
       <Balance />
@@ -40,12 +38,12 @@ type ActionProps = {
 const Action = ({ title, url }: ActionProps) => {
   return (
     <Link href={url}>
-      <>
-        <Button color="primary" isIconOnly>
+      <div>
+        <div className="bg-primary hover:bg-primary-700 flex aspect-square w-10 items-center justify-center rounded-full shadow-sm transition-all">
           <Icons.send color="#fff" width={24} height={24} />
-        </Button>
+        </div>
         <p>{title}</p>
-      </>
+      </div>
     </Link>
   );
 };

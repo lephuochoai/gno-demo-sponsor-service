@@ -37,11 +37,11 @@ export const SendTransactionModule = () => {
       )}
 
       <div className="flex justify-center gap-4">
-        <Link href={ROUTES.DASHBOARD} className="flex-1">
-          <Button color="default" size="lg" className="w-full">
+        <Button color="default" size="lg" className="w-full px-0">
+          <Link href={ROUTES.DASHBOARD} className="flex h-full w-full items-center justify-center">
             Cancel
-          </Button>
-        </Link>
+          </Link>
+        </Button>
 
         {isValidAddress && (
           <div className="flex-1">

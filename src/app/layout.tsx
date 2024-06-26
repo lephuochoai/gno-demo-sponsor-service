@@ -64,11 +64,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
         className={clsx('bg-background min-h-screen font-sans antialiased', fontSans.variable, fontMono.variable)}
       >
-        <QueryClientProviderWrapper>
-          <WalletContextProviderWrapper>
-            <Providers themeProps={{ attribute: 'class', forcedTheme: 'light' }}>{children}</Providers>
-          </WalletContextProviderWrapper>
-        </QueryClientProviderWrapper>
+        <Providers themeProps={{ attribute: 'class', forcedTheme: 'light' }}>
+          <QueryClientProviderWrapper>
+            <WalletContextProviderWrapper>{children}</WalletContextProviderWrapper>
+          </QueryClientProviderWrapper>
+        </Providers>
       </body>
     </html>
   );
