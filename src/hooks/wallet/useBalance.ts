@@ -4,11 +4,15 @@ import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 import { textToBalances } from '@/lib/common';
 import { QUERY_KEY } from '@/lib/query-key';
 
+import { useAccount } from './useAccount';
+
 export const useBalance = (props?: UseQueryOptions<any, Error>) => {
-  const { walletAccount, isConnected } = useWalletContext();
+  const { isConnected } = useWalletContext();
+  const { data: account } = useAccount();
+
   const query = useQuery({
-    queryKey: [QUERY_KEY.useBalance, isConnected, walletAccount],
-    queryFn: () => textToBalances(walletAccount?.coins ?? '') ?? null,
+    queryKey: [QUERY_KEY.useBalance, isConnected, account],
+    queryFn: () => textToBalances(account?.coins ?? '') ?? null,
     ...props,
   });
 

@@ -1,129 +1,46 @@
 'use client';
 
 import * as React from 'react';
-import {
-  getKeyValue,
-  Pagination,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from '@nextui-org/react';
+import { Skeleton } from '@nextui-org/react';
 
-type Props = {};
-export const Activity = (props: Props) => {
+import { useNftBalance } from '@/hooks/wallet/useNftBalance';
+
+export const Activity = () => {
+  const { data, isFetching } = useNftBalance();
+
   return (
     <div className="space-y-4 p-4">
-      <Heading />
+      <Heading isFetching={isFetching} total={data ?? '0'} />
 
-      <Table aria-label="Example table with dynamic content">
-        <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-        </TableHeader>
-        <TableBody items={rows}>
-          {(item) => (
-            <TableRow key={item.key}>{(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}</TableRow>
-          )}
-        </TableBody>
-      </Table>
+      {/* <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4 lg:gap-8">
+        {[1, 2, 4].map((tokenId) => (
+          <div
+            className="flex aspect-square items-center justify-center rounded-md border bg-gray-200 shadow-md"
+            key={tokenId}
+          >
+            {tokenId}
+          </div>
+        ))}
+      </div> */}
 
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <Pagination showControls total={10} initialPage={1} />
-      </div>
+      </div> */}
     </div>
   );
 };
 
-const Heading = () => <p className="text-center text-lg font-medium">Activities</p>;
-
-const rows = [
-  {
-    key: '1',
-    name: 'Tony Reichert',
-    role: 'CEO',
-    status: 'Active',
-  },
-  {
-    key: '2',
-    name: 'Zoey Lang',
-    role: 'Technical Lead',
-    status: 'Paused',
-  },
-  {
-    key: '3',
-    name: 'Jane Fisher',
-    role: 'Senior Developer',
-    status: 'Active',
-  },
-  {
-    key: '4',
-    name: 'William Howard',
-    role: 'Community Manager',
-    status: 'Vacation',
-  },
-  {
-    key: '5',
-    name: 'Tony Reichert',
-    role: 'CEO',
-    status: 'Active',
-  },
-  {
-    key: '6',
-    name: 'Zoey Lang',
-    role: 'Technical Lead',
-    status: 'Paused',
-  },
-  {
-    key: '7',
-    name: 'Jane Fisher',
-    role: 'Senior Developer',
-    status: 'Active',
-  },
-  {
-    key: '8',
-    name: 'William Howard',
-    role: 'Community Manager',
-    status: 'Vacation',
-  },
-  {
-    key: '9',
-    name: 'Tony Reichert',
-    role: 'CEO',
-    status: 'Active',
-  },
-  {
-    key: '10',
-    name: 'Zoey Lang',
-    role: 'Technical Lead',
-    status: 'Paused',
-  },
-  {
-    key: '11',
-    name: 'Jane Fisher',
-    role: 'Senior Developer',
-    status: 'Active',
-  },
-  {
-    key: '12',
-    name: 'William Howard',
-    role: 'Community Manager',
-    status: 'Vacation',
-  },
-];
-
-const columns = [
-  {
-    key: 'name',
-    label: 'NAME',
-  },
-  {
-    key: 'role',
-    label: 'ROLE',
-  },
-  {
-    key: 'status',
-    label: 'STATUS',
-  },
-];
+const Heading = ({ isFetching, total = '0' }: { isFetching: boolean; total: string }) => {
+  return (
+    <div className="flex items-center justify-between">
+      <p className="text-left text-lg font-medium">Total NFT(s)</p>
+      {isFetching ? (
+        <Skeleton className="rounded-lg">
+          <div className="bg-secondary h-6 w-10"></div>
+        </Skeleton>
+      ) : (
+        <p className="font-medium">{total}</p>
+      )}
+    </div>
+  );
+};

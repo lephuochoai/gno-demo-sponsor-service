@@ -1,3 +1,5 @@
+import { Toaster } from 'sonner';
+
 import '@/styles/globals.css';
 
 import { type Metadata, type Viewport } from 'next';
@@ -66,7 +68,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <Providers themeProps={{ attribute: 'class', forcedTheme: 'light' }}>
           <QueryClientProviderWrapper>
-            <WalletContextProviderWrapper>{children}</WalletContextProviderWrapper>
+            <WalletContextProviderWrapper>
+              <Toaster />
+
+              {children}
+            </WalletContextProviderWrapper>
           </QueryClientProviderWrapper>
         </Providers>
       </body>

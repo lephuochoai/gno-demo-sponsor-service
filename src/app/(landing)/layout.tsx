@@ -5,7 +5,7 @@ import { Box } from '@/app/(landing)/components/Box';
 import { Container } from '@/app/(landing)/components/Container';
 import { AppContextProvider } from '@/context/app.context';
 import { Button } from '@nextui-org/button';
-import { Skeleton } from '@nextui-org/react';
+import { Skeleton, Tooltip } from '@nextui-org/react';
 
 import { shortenString } from '@/lib/common';
 import { useAccount } from '@/hooks/wallet/useAccount';
@@ -49,7 +49,9 @@ const Heading = () => {
       <div className="flex items-center p-4 shadow-md">
         <div className="flex-1" />
 
-        <p className="text-center font-bold">{shortenString(account?.address ?? '', 4)}</p>
+        <Tooltip content={account?.address} showArrow>
+          <p className="text-center font-bold">{shortenString(account?.address ?? '', 4)}</p>
+        </Tooltip>
 
         <div className="flex flex-1 justify-end">
           <Button onClick={() => disconnect()} isLoading={disconnecting}>

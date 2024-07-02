@@ -1,13 +1,24 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState, type PropsWithChildren } from 'react';
+import { GnoJSONRPCProvider, type GnoProvider } from '@gnolang/gno-js-client';
 import { v4 as uuidv4 } from 'uuid';
 
 import { createSafeContext } from '@/lib/create-safe-context';
 
+const CHAIN_ID = 'local';
+
+const currentChain = {
+  name: 'Local',
+  chainId: 'local',
+  rpcUrl: 'http://127.0.0.1:26657',
+  wsUrl: 'ws://127.0.0.1:26657/websocket',
+};
+
 type WalletContextProps = {
   walletAccount: any;
   isConnected: boolean;
+  clientProvider: GnoProvider | undefined;
   connect: () => void;
   disconnectWallet: () => void;
   setWalletAccount: (account: any) => void;
@@ -23,6 +34,7 @@ const SPONSOR_SESSION_KEY = 'SPONSOR_SESSION';
 export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) => {
   const [walletAccount, setWalletAccount] = useState<any>();
   const [provider, setProvider] = useState<any>();
+  const [clientProvider, setClientProvider] = useState<GnoProvider>();
   const [sessionId, setSessionId] = useState('');
 
   const isConnected = useMemo(() => {
@@ -32,29 +44,47 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
   const disconnectWallet = useCallback(() => {
     setWalletAccount(undefined);
     setSessionId('');
+    setClientProvider(undefined);
     sessionStorage.removeItem(SPONSOR_SESSION_KEY);
   }, []);
+
+  const switchNetwork = async (chainId: string) => {
+    return await window.adena.SwitchNetwork(chainId);
+  };
 
   const connectAdenaClient = useCallback(async () => {
     if (!window.adena) {
       //open adena.app in a new tab if the adena object is not found
       window.open('https://adena.app/', '_blank');
     } else {
-      window.adena.AddEstablish('Adena');
+      await window.adena.AddEstablish('Adena');
       const account = await window.adena.GetAccount();
+      const network = account.data.chainId === CHAIN_ID;
+      if (!network) {
+        await switchNetwork(CHAIN_ID);
+      }
       setWalletAccount(account?.data);
       setProvider(window.adena);
+      setClientProvider(new GnoJSONRPCProvider(currentChain.rpcUrl));
     }
   }, []);
 
   const doContract = async (messages: SignAndSendTrans[]) => {
     if (!provider) return;
 
-    await provider.DoContract({
+    const result = await provider.DoContract({
       messages: messages,
       gasFee: 1,
       gasWanted: 10000000,
     });
+
+    console.log(result);
+
+    if (result?.status === 'success') {
+      return result.data;
+    } else {
+      throw new Error(result.message);
+    }
   };
 
   /**
@@ -96,6 +126,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       value={{
         walletAccount,
         isConnected,
+        clientProvider,
         connect: connectAdenaClient,
         setWalletAccount,
         disconnectWallet,

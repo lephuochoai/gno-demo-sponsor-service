@@ -12,3 +12,13 @@ export const addressValidate = (address: string) => {
 
   return true;
 };
+
+export function parseABCIValue(str: string): string {
+  const regexp = /\s.*$/;
+  return str.replace(regexp, '').slice(1);
+}
+
+export function makeABCIParams(functionName: string, args: (string | number | boolean)[]) {
+  const argsStr = args.map((arg) => (typeof arg === 'string' ? `"${arg}"` : `${arg}`)).join(', ');
+  return `${functionName}(${argsStr})`;
+}

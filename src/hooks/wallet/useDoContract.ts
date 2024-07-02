@@ -7,7 +7,7 @@ export const useDoContract = (props?: UseMutationOptions<Props, Error, SignAndSe
 
   return useMutation<any, Error, SignAndSendTrans[]>({
     mutationFn: async (messages) => {
-      await doContract(messages);
+      return await doContract(messages);
     },
     ...props,
   });

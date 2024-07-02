@@ -7,7 +7,7 @@ import { ROUTES } from '@/lib/routes';
 export const Actions = () => {
   return (
     <div className="flex justify-center gap-8">
-      <Action title="Send" url={ROUTES.SEND} icon={<Icons.send color="#fff" width={24} height={24} />} />
+      {/* <Action title="Send" url={ROUTES.SEND} icon={<Icons.send color="#fff" width={24} height={24} />} /> */}
 
       <Action title="Mint" url={ROUTES.MINT} icon={<Icons.image color="#fff" width={24} height={24} />} />
     </div>
