@@ -58,7 +58,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       //open adena.app in a new tab if the adena object is not found
       window.open('https://adena.app/', '_blank');
     } else {
-      await window.adena.AddEstablish('Adena');
+      await window.adena.AddEstablish('Sponsor Service');
       const account = await window.adena.GetAccount();
       const network = account.data.chainId === CHAIN_ID;
       if (!network) {

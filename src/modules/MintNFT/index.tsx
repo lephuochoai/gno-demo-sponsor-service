@@ -30,7 +30,7 @@ export const MintNFTModule = () => {
     },
   });
 
-  const { data: sponsors } = useGetListSponsors();
+  const { data: sponsors, isFetching: isFetchingSponsors } = useGetListSponsors();
 
   const handleMint = () => {
     if (!account?.address) return;
@@ -62,7 +62,12 @@ export const MintNFTModule = () => {
     <Box>
       <p className="text-center font-semibold">Mint NFT</p>
 
-      <Sponsor data={sponsors ?? []} value={sponsor} onChange={(value) => setSponsor(value)} />
+      <Sponsor
+        isFetching={isFetchingSponsors}
+        data={sponsors ?? []}
+        value={sponsor}
+        onChange={(value) => setSponsor(value)}
+      />
 
       <div className="flex justify-center gap-4">
         <Button color="default" size="lg" className="w-full flex-1 px-0">

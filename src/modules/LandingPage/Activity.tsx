@@ -9,7 +9,7 @@ export const Activity = () => {
   const { data, isFetching } = useNftBalance();
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 px-4 pt-4">
       <Heading isFetching={isFetching} total={data ?? '0'} />
 
       {/* <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-4 lg:gap-8">

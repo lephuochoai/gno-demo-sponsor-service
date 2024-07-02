@@ -7,9 +7,10 @@ import { type TSponsor } from '@/hooks/wallet/useGetListSponsors';
 type Props = {
   data: TSponsor[];
   value?: string;
+  isFetching?: boolean;
   onChange: (value: string) => void;
 };
-export const Sponsor = ({ data = [], onChange, value }: Props) => {
+export const Sponsor = ({ data = [], onChange, value, isFetching = false }: Props) => {
   console.log({ data });
 
   return (
@@ -20,12 +21,13 @@ export const Sponsor = ({ data = [], onChange, value }: Props) => {
       onChange={(e) => onChange(e.target.value)}
       placeholder="Select a sponsor service"
       className="w-full"
+      isLoading={isFetching}
     >
       {(item) => (
         <SelectItem key={item.address} textValue={item.name}>
-          <div>
+          <div className="flex items-center gap-4">
             <p className="text-medium">{item.name}</p>
-            <p className="text-xs italic text-gray-500">{shortenString(item.address)}</p>
+            <p className="text-xs italic text-gray-500">({shortenString(item.address)})</p>
           </div>
         </SelectItem>
       )}

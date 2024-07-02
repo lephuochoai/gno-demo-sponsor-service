@@ -6,6 +6,7 @@ import { Container } from '@/app/(landing)/components/Container';
 import { AppContextProvider } from '@/context/app.context';
 import { Button } from '@nextui-org/button';
 import { Skeleton, Tooltip } from '@nextui-org/react';
+import Marquee from 'react-fast-marquee';
 
 import { shortenString } from '@/lib/common';
 import { useAccount } from '@/hooks/wallet/useAccount';
@@ -22,10 +23,14 @@ const Layout = ({ children }: PropsWithChildren) => {
 
         <main className="bg-background mx-auto min-h-screen w-full grow text-clip">
           <Container>
-            <Box className="space-y-8">
+            <Marquee className="rounded-md bg-gray-500 py-4 text-white shadow-md">
+              <p className="text-lg font-bold">VARMETA - DEMO SPONSOR SERVICE</p>
+            </Marquee>
+
+            <Box>
               <Heading />
 
-              <div className="pb-8">{children}</div>
+              <div className="p-8">{children}</div>
             </Box>
           </Container>
         </main>
