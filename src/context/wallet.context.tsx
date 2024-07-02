@@ -23,6 +23,7 @@ type WalletContextProps = {
   disconnectWallet: () => void;
   setWalletAccount: (account: any) => void;
   doContract: (messages: SignAndSendTrans[]) => void;
+  signAmino: (messages: SignAndSendTrans[]) => void;
 };
 
 export const [WalletContextProvider, useWalletContext] = createSafeContext<WalletContextProps>(
@@ -78,7 +79,21 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       gasWanted: 10000000,
     });
 
-    console.log(result);
+    if (result?.status === 'success') {
+      return result.data;
+    } else {
+      throw new Error(result.message);
+    }
+  };
+
+  const signAmino = async (messages: SignAndSendTrans[]) => {
+    if (!provider) return;
+
+    const result = await provider.Sign({
+      messages: messages,
+      gasFee: 1,
+      gasWanted: 10000000,
+    });
 
     if (result?.status === 'success') {
       return result.data;
@@ -131,6 +146,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
         setWalletAccount,
         disconnectWallet,
         doContract,
+        signAmino,
       }}
     >
       {children}
@@ -139,6 +155,6 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
 };
 
 export type SignAndSendTrans = {
-  type: '/bank.MsgSend' | '/vm.m_call' | '/vm.m_addpkg' | '/vm.m_run';
+  type: '/bank.MsgSend' | '/vm.m_call' | '/vm.m_addpkg' | '/vm.m_run' | '/vm.m_noop';
   value: any;
 };

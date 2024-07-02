@@ -3,4 +3,5 @@ export const QUERY_KEY = {
   useConnected: 'useConnected',
   useBalance: 'useBalance',
   useNftBalance: 'useNftBalance',
+  useGetListSponsors: 'useGetListSponsors',
 };

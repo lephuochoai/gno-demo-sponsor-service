@@ -10,7 +10,6 @@ import { addressValidate } from '@/lib/utils';
 
 import { Asset } from './Asset';
 import { SendTo } from './SendTo';
-import { Sponsor } from './Sponsor';
 
 export const SendTransactionModule = () => {
   const { sendTransactionValue } = useSendTransactionContext();
@@ -30,7 +29,7 @@ export const SendTransactionModule = () => {
 
       {isValidAddress && (
         <>
-          <Sponsor />
+          {/* <Sponsor /> */}
 
           <Asset isValidAmount={isValidAmount} />
         </>

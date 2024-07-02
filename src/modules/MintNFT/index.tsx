@@ -2,19 +2,27 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@nextui-org/button';
 import { toast } from 'sonner';
 
 import { ROUTES } from '@/lib/routes';
 import { useAccount } from '@/hooks/wallet/useAccount';
-import { useDoContract } from '@/hooks/wallet/useDoContract';
+import { useGetListSponsors } from '@/hooks/wallet/useGetListSponsors';
+import { useSignAmino } from '@/hooks/wallet/useSignAmino';
+
+import { Sponsor } from './Sponsor';
 
 export const MintNFTModule = () => {
+  const router = useRouter();
   // const [tokenId, setTokenId] = React.useState('');
+  const [sponsor, setSponsor] = React.useState<string | undefined>();
   const { data: account } = useAccount();
-  const { mutate: onMint, isPending } = useDoContract({
-    onSuccess() {
+  const { mutate: signMessage, isPending: isPendingSign } = useSignAmino({
+    onSuccess(response) {
+      console.log(response);
       toast.success('Mint NFT successfully');
+      router.push(ROUTES.DASHBOARD);
     },
     onError(error) {
       console.error(error);
@@ -22,10 +30,18 @@ export const MintNFTModule = () => {
     },
   });
 
+  const { data: sponsors } = useGetListSponsors();
+
   const handleMint = () => {
     if (!account?.address) return;
 
-    onMint([
+    signMessage([
+      {
+        type: '/vm.m_noop',
+        value: {
+          caller: sponsor,
+        },
+      },
       {
         type: '/vm.m_call',
         value: {
@@ -46,18 +62,7 @@ export const MintNFTModule = () => {
     <Box>
       <p className="text-center font-semibold">Mint NFT</p>
 
-      {/* <Input
-        label="TokenId"
-        placeholder="Enter token ID"
-        pattern="^[0-9]$"
-        className="text-4xl"
-        size="lg"
-        isClearable
-        value={tokenId}
-        // isInvalid={!isValidAmount}
-        onChange={(e) => setTokenId(e.target.value)}
-        onClear={() => setTokenId('')}
-      /> */}
+      <Sponsor data={sponsors ?? []} value={sponsor} onChange={(value) => setSponsor(value)} />
 
       <div className="flex justify-center gap-4">
         <Button color="default" size="lg" className="w-full flex-1 px-0">
@@ -67,7 +72,14 @@ export const MintNFTModule = () => {
         </Button>
 
         <div className="flex-1">
-          <Button color="primary" className="w-full" size="lg" onClick={handleMint} isLoading={isPending}>
+          <Button
+            color="primary"
+            className="w-full"
+            size="lg"
+            onClick={handleMint}
+            isLoading={isPendingSign}
+            disabled={!sponsor}
+          >
             Mint
           </Button>
         </div>
