@@ -11,8 +11,6 @@ type Props = {
   onChange: (value: string) => void;
 };
 export const Sponsor = ({ data = [], onChange, value, isFetching = false }: Props) => {
-  console.log({ data });
-
   return (
     <Select
       items={data}
@@ -24,7 +22,7 @@ export const Sponsor = ({ data = [], onChange, value, isFetching = false }: Prop
       isLoading={isFetching}
     >
       {(item) => (
-        <SelectItem key={item.address} textValue={item.name}>
+        <SelectItem key={item.name} textValue={item.name}>
           <div className="flex items-center gap-4">
             <p className="text-medium">{item.name}</p>
             <p className="text-xs italic text-gray-500">({shortenString(item.address)})</p>

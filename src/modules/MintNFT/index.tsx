@@ -8,38 +8,48 @@ import { toast } from 'sonner';
 
 import { ROUTES } from '@/lib/routes';
 import { useAccount } from '@/hooks/wallet/useAccount';
+import { useChainId } from '@/hooks/wallet/useChainId';
+import { useConnected } from '@/hooks/wallet/useConnected';
 import { useGetListSponsors } from '@/hooks/wallet/useGetListSponsors';
+import { useMintBySponsor } from '@/hooks/wallet/useMintBySponsor';
+import { useReceiveSponsorEndpoint } from '@/hooks/wallet/useReceiveSponsorEndpoint';
 import { useSignAmino } from '@/hooks/wallet/useSignAmino';
 
 import { Sponsor } from './Sponsor';
 
 export const MintNFTModule = () => {
   const router = useRouter();
+  const { data: isConnected, isFetching: isFetchingConnected } = useConnected();
   // const [tokenId, setTokenId] = React.useState('');
   const [sponsor, setSponsor] = React.useState<string | undefined>();
   const { data: account } = useAccount();
-  const { mutate: signMessage, isPending: isPendingSign } = useSignAmino({
-    onSuccess(response) {
-      console.log(response);
+  const { data: chainId } = useChainId();
+  const { mutateAsync: receiveSponsorEndpoint, isPending: isPendingReceiveEndpoint } = useReceiveSponsorEndpoint();
+  const { mutateAsync: signMessage, isPending: isPendingSign } = useSignAmino({});
+  const { mutateAsync: mintBySponsor, isPending: isPendingMintBySponsor } = useMintBySponsor({
+    onSuccess() {
       toast.success('Mint NFT successfully');
       router.push(ROUTES.DASHBOARD);
     },
     onError(error) {
       console.error(error);
-      toast.error('Mint fail');
+      toast.error('Mint NFT failure');
     },
   });
 
   const { data: sponsors, isFetching: isFetchingSponsors } = useGetListSponsors();
+  const handleMint = async () => {
+    if (!account?.address || !sponsor || !chainId) return;
 
-  const handleMint = () => {
-    if (!account?.address) return;
+    const endPointUrl = await receiveSponsorEndpoint(sponsor);
 
-    signMessage([
+    const getSponsorAddress = sponsors?.find((spo) => spo.name === sponsor)?.address;
+
+    const signMessageResponse = await signMessage([
       {
         type: '/vm.m_noop',
         value: {
-          caller: sponsor,
+          caller: getSponsorAddress,
         },
       },
       {
@@ -56,7 +66,48 @@ export const MintNFTModule = () => {
         },
       },
     ]);
+
+    /**
+     * Use field `mockTransaction` for mock transaction
+     */
+    await mintBySponsor({
+      transaction: {
+        msg: signMessageResponse.document.msgs.map((_: any) => {
+          const handleMessage = {
+            '@type': _.type,
+            ..._.value,
+          };
+
+          return handleMessage;
+        }),
+        fee: {
+          gas_wanted: '100000',
+          gas_fee: `${signMessageResponse.document.fee.gas}ugnot`,
+        },
+        signatures: [
+          {
+            pub_key: null,
+            signature: null,
+          },
+          {
+            // pub_key: {
+            //   '@type': signMessageResponse.signature.pubKey.typeUrl,
+            //   value: signMessageResponse.signature.pubKey.value,
+            // },
+            pub_key: account.publicKey,
+            signature: signMessageResponse.signature.signature,
+          },
+        ],
+        memo: signMessageResponse.document.memo,
+      },
+      endPointUrl,
+    });
   };
+
+  React.useEffect(() => {
+    if (isFetchingConnected || isConnected) return;
+    router.push(ROUTES.DASHBOARD);
+  }, [isConnected, isFetchingConnected, router]);
 
   return (
     <Box>
@@ -82,7 +133,7 @@ export const MintNFTModule = () => {
             className="w-full"
             size="lg"
             onClick={handleMint}
-            isLoading={isPendingSign}
+            isLoading={isPendingSign || isPendingReceiveEndpoint || isPendingMintBySponsor}
             disabled={!sponsor}
           >
             Mint

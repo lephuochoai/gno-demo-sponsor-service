@@ -19,8 +19,6 @@ export const useGetListSponsors = (props?: Props) => {
         'gno.land/r/varmeta/sponsors',
         makeABCIParams('GetList', [])
       );
-      console.log({ result });
-
       return parseListSponsors(result ?? '');
     },
     refetchOnMount: true,

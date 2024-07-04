@@ -10,14 +10,16 @@ const CHAIN_ID = 'local';
 
 const currentChain = {
   name: 'Local',
-  chainId: 'local',
-  rpcUrl: 'http://127.0.0.1:26657',
-  wsUrl: 'ws://127.0.0.1:26657/websocket',
-};
+  chainId: 'dev',
+  rpcUrl: 'https://chain.virtualx.vn',
+  // 'http://127.0.0.1:26657',
+  wsUrl: 'ws://chain.virtualx.vn/websocket',
+} as const;
 
 type WalletContextProps = {
   walletAccount: any;
   isConnected: boolean;
+  chain: typeof currentChain;
   clientProvider: GnoProvider | undefined;
   connect: () => void;
   disconnectWallet: () => void;
@@ -37,6 +39,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
   const [provider, setProvider] = useState<any>();
   const [clientProvider, setClientProvider] = useState<GnoProvider>();
   const [sessionId, setSessionId] = useState('');
+  const [chain] = useState(currentChain);
 
   const isConnected = useMemo(() => {
     return !!walletAccount && walletAccount?.address?.length > 0;
@@ -142,6 +145,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
         walletAccount,
         isConnected,
         clientProvider,
+        chain,
         connect: connectAdenaClient,
         setWalletAccount,
         disconnectWallet,
