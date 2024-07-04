@@ -1,6 +1,11 @@
-# Next.js
+# Description
+VARMETA - DEMO SPONSOR SERVICE
 
-This is a template for creating applications using Next.js 13 (app directory)
+## Environment requirement
+
+> NodeJS: `v16.18.1` or LTS latest
+>
+> pnpm: `8.15.2` or LTS latest
 
 ## Technologies Used
 
@@ -14,7 +19,7 @@ This is a template for creating applications using Next.js 13 (app directory)
 
 ## How to Use
 
-### Install dependencies
+## Installation dependencies
 
 ```bash
 pnpm install
@@ -25,3 +30,14 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+### Build For Production
+
+```bash
+pnpm build
+```
+Copy all content in `.next` for deployment
