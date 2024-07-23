@@ -89,10 +89,9 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
     }
   };
 
-  const signAmino = async (messages: SignAndSendTrans[]) => {
+  const signTx = async (messages: SignAndSendTrans[]) => {
     if (!provider) return;
-
-    const result = await provider.Sign({
+    const result = await provider.SignTx({
       messages: messages,
       gasFee: 1,
       gasWanted: 10000000,
@@ -150,7 +149,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
         setWalletAccount,
         disconnectWallet,
         doContract,
-        signAmino,
+        signAmino: signTx,
       }}
     >
       {children}
