@@ -4,7 +4,8 @@ type Props = {};
 export const useMintBySponsor = (props?: UseMutationOptions<Props>) => {
   return useMutation<any, Error, any>({
     mutationFn: async ({ transaction, endPointUrl }) => {
-      const response = await fetch(`${endPointUrl}v1/sponsor/transfer`, {
+      const response = await fetch(`${endPointUrl}`, {
+        // const response = await fetch(`http://127.0.0.1:8765/v1/sponsor/transfer`, {
         method: 'POST',
         // headers: {
         //   'Content-Type': 'application/json',

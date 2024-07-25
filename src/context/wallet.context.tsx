@@ -8,12 +8,14 @@ import { createSafeContext } from '@/lib/create-safe-context';
 
 const CHAIN_ID = 'local';
 
+//consider to change this chain url
 const currentChain = {
   name: 'Local',
   chainId: 'dev',
   rpcUrl: 'https://chain.virtualx.vn',
+  // rpcUrl: 'http://127.0.0.1:26657',
   // 'http://127.0.0.1:26657',
-  wsUrl: 'ws://chain.virtualx.vn/websocket',
+  wsUrl: 'ws://127.0.0.1:26657/websocket',
 } as const;
 
 type WalletContextProps = {

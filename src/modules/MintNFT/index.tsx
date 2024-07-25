@@ -71,7 +71,7 @@ export const MintNFTModule = () => {
      * Use field `mockTransaction` for mock transaction
      */
     await mintBySponsor({
-      transaction: signMessageResponse,
+      transaction: JSON.stringify(signMessageResponse),
       endPointUrl,
     });
   };
