@@ -71,35 +71,7 @@ export const MintNFTModule = () => {
      * Use field `mockTransaction` for mock transaction
      */
     await mintBySponsor({
-      transaction: {
-        msg: signMessageResponse.document.msgs.map((_: any) => {
-          const handleMessage = {
-            '@type': _.type,
-            ..._.value,
-          };
-
-          return handleMessage;
-        }),
-        fee: {
-          gas_wanted: '100000',
-          gas_fee: `${signMessageResponse.document.fee.gas}ugnot`,
-        },
-        signatures: [
-          {
-            pub_key: null,
-            signature: null,
-          },
-          {
-            // pub_key: {
-            //   '@type': signMessageResponse.signature.pubKey.typeUrl,
-            //   value: signMessageResponse.signature.pubKey.value,
-            // },
-            pub_key: account.publicKey,
-            signature: signMessageResponse.signature.signature,
-          },
-        ],
-        memo: signMessageResponse.document.memo,
-      },
+      transaction: JSON.stringify(signMessageResponse),
       endPointUrl,
     });
   };

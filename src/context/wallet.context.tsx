@@ -8,12 +8,13 @@ import { createSafeContext } from '@/lib/create-safe-context';
 
 const CHAIN_ID = 'local';
 
+//consider to change this chain url
 const currentChain = {
   name: 'Local',
   chainId: 'dev',
-  rpcUrl: 'https://chain.virtualx.vn',
-  // 'http://127.0.0.1:26657',
-  wsUrl: 'ws://chain.virtualx.vn/websocket',
+  rpcUrl: 'https://chain.gnovar.site',
+  // rpcUrl: 'http://127.0.0.1:26657',
+  wsUrl: 'ws://chain.gnovar.site/websocket',
 } as const;
 
 type WalletContextProps = {
@@ -89,14 +90,14 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
     }
   };
 
-  const signAmino = async (messages: SignAndSendTrans[]) => {
+  const signTx = async (messages: SignAndSendTrans[]) => {
     if (!provider) return;
-
-    const result = await provider.Sign({
+    const result = await provider.SignTx({
       messages: messages,
       gasFee: 1,
       gasWanted: 10000000,
     });
+    console.log(result)
 
     if (result?.status === 'success') {
       return result.data;
@@ -150,7 +151,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
         setWalletAccount,
         disconnectWallet,
         doContract,
-        signAmino,
+        signAmino: signTx,
       }}
     >
       {children}
