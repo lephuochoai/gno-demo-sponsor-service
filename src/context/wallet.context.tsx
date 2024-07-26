@@ -12,10 +12,9 @@ const CHAIN_ID = 'local';
 const currentChain = {
   name: 'Local',
   chainId: 'dev',
-  rpcUrl: 'https://chain.virtualx.vn',
+  rpcUrl: 'https://chain.gnovar.site',
   // rpcUrl: 'http://127.0.0.1:26657',
-  // 'http://127.0.0.1:26657',
-  wsUrl: 'ws://127.0.0.1:26657/websocket',
+  wsUrl: 'ws://chain.gnovar.site/websocket',
 } as const;
 
 type WalletContextProps = {
@@ -98,6 +97,7 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       gasFee: 1,
       gasWanted: 10000000,
     });
+    console.log(result)
 
     if (result?.status === 'success') {
       return result.data;
