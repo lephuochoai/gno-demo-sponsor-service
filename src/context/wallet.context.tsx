@@ -97,7 +97,6 @@ export const WalletContextProviderWrapper = ({ children }: PropsWithChildren) =>
       gasFee: 1,
       gasWanted: 10000000,
     });
-    console.log(result)
 
     if (result?.status === 'success') {
       return result.data;
